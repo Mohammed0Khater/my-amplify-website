@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Cloud Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --surface: #131929;
+      --border: #1e2d4a;
+      --accent: #3b82f6;
+      --accent2: #06b6d4;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ─── Background grid ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Glow blob ─── */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 70%);
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes blobFloat {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(30px); }
+    }
+
+    /* ─── Navbar ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 6%;
+      backdrop-filter: blur(14px);
+      background: rgba(11,15,26,.7);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    nav ul { list-style: none; display: flex; gap: 2.5rem; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .9rem;
+      letter-spacing: .04em;
+      transition: color .25s;
+    }
+    nav a:hover { color: var(--white); }
+
+    /* ─── Hero ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 6rem;
+      position: relative; z-index: 1;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(59,130,246,.12);
+      border: 1px solid rgba(59,130,246,.35);
+      color: var(--accent);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      padding: .35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 2rem;
+      animation: fadeUp .8s ease both;
+    }
+
+    .badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .9s .1s ease both;
+    }
+
+    h1 .gradient {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      animation: fadeUp 1s .2s ease both;
+    }
+
+    .cta-group {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 1s .3s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 2rem;
+      border-radius: 8px;
+      font-size: .95rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: all .25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+    }
+    .btn-primary:hover { opacity: .85; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(59,130,246,.35); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--white); transform: translateY(-2px); }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* ─── Cards section ─── */
+    section {
+      position: relative; z-index: 1;
+      padding: 6rem 6%;
+    }
+
+    .section-label {
+      font-size: .78rem;
+      letter-spacing: .14em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 3rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(59,130,246,.15);
+    }
+
+    .card-icon {
+      width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(59,130,246,.2), rgba(6,182,212,.2));
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .card p { font-size: .92rem; color: var(--muted); }
+
+    /* ─── Stats strip ─── */
+    .stats {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; justify-content: space-around;
+      padding: 3rem 6%;
+      gap: 2rem;
+      position: relative; z-index: 1;
+    }
+
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
+
+    /* ─── Footer ─── */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      color: var(--muted);
+      font-size: .85rem;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 600px) {
+      nav ul { gap: 1.2rem; }
+      .cta-group { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">⚡ CloudFolio</div>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge"><span></span> Deployed on AWS Amplify</div>
+    <h1>Build &amp; Scale<br/>in the <span class="gradient">Cloud</span></h1>
+    <p class="subtitle">
+      A lightning-fast static website hosted on AWS Amplify with continuous deployment from GitHub.
+    </p>
+    <div class="cta-group">
+      <a href="#services" class="btn btn-primary">🚀 Explore Services</a>
+      <a href="#about" class="btn btn-outline">Learn More →</a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num">99.9%</div><div class="stat-label">Uptime SLA</div></div>
+    <div class="stat"><div class="stat-num">&lt;1s</div><div class="stat-label">Page Load Time</div></div>
+    <div class="stat"><div class="stat-num">AWS</div><div class="stat-label">Powered By</div></div>
+    <div class="stat"><div class="stat-num">CI/CD</div><div class="stat-label">Auto Deploy</div></div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="section-label">What We Offer</div>
+    <div class="section-title">Cloud-Powered Services</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">☁️</div>
+        <h3>Static Hosting</h3>
+        <p>Global CDN delivery via AWS Amplify Hosting for blazing-fast performance worldwide.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <h3>Auto Deployment</h3>
+        <p>Push to GitHub and your site updates automatically — zero manual steps required.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <h3>HTTPS by Default</h3>
+        <p>Free SSL certificate provisioned automatically for every Amplify deployment.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Build Monitoring</h3>
+        <p>Real-time build logs, branch previews, and deployment history all in one place.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-label">About This Project</div>
+    <div class="section-title">Built for the Cloud Age</div>
+    <p style="max-width:620px; color:var(--muted); font-size:1rem; line-height:1.9;">
+      This site demonstrates continuous deployment using <strong style="color:var(--text)">AWS Amplify</strong>
+      and <strong style="color:var(--text)">GitHub</strong>. Every commit to the
+      <code style="background:var(--surface); padding:.1rem .45rem; border-radius:4px; font-size:.9rem;">main</code>
+      branch triggers an automated build and redeploy — no servers to manage, no pipelines to configure.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <p>Made with ❤️ and deployed on <a href="https://aws.amazon.com/amplify/" target="_blank">AWS Amplify</a></p>
+    <p style="margin-top:.5rem;">© 2025 CloudFolio · Static Site · Version 1.0</p>
+  </footer>
+
+</body>
+</html>
